@@ -5,7 +5,8 @@
 # Week 01 Evidence
 
 ## 1. Tool Versions Output
-![Versions](./Screenshot 2569-07-20 at 11.07.24.png)
+![Versions] <img width="1078" height="244" alt="image" src="https://github.com/user-attachments/assets/484e60ea-9843-4537-8c12-1d695995fd57" />
+
 
 ## 2. Hello.js Execution Result
 ![Hello.js] (./labs/week-01/evidence/Screenshot 2569-07-20 at 11.02.59.png)
