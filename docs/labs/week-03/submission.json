@@ -1,15 +1,15 @@
 {
   "week": "week-03",
   "title": "Responsive Web UI & Form Interaction",
-  "status": "draft",
-  "originalRepoUrl": "",
-  "originalCommit": "",
+  "status": "submitted",
+  "originalRepoUrl": "https://github.com/Jakreewut/engse203-lab03-68543210072-3",
+  "originalCommit": "421a3d3a644c2b496a306b03c84d96faaae0a9cb",
   "pullRequestUrl": "",
   "submissionTag": "",
-  "testStatus": "not-tested",
+  "testStatus": "pass",
   "notes": "Static site ต้องมี index.html ที่ publish root",
   "pageUrl": "https://Jakreewut.github.io/engse203-student-labs-68543210072/labs/week-03/",
   "sourceUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/tree/lab/week-03/labs/week-03/source",
-  "hasPublish": false,
-  "sourceEntries": 0
+  "hasPublish": true,
+  "sourceEntries": 8
 }
