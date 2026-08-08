@@ -1,33 +1,36 @@
 import { useState } from 'react';
 
-// TODO LAB4-R05: สร้าง validation function
+// LAB4-R05: Validation function ตรงตามข้อกำหนดของ Lab
 function validate(data) {
   const errors = {};
-  if (data.displayName.trim().length < 2) {
-    errors.displayName = 'กรุณากรอกชื่ออย่างน้อย 2 ตัวอักษร';
+  if (data.requesterName.trim().length < 2) {
+    errors.requesterName = 'กรุณากรอกชื่ออย่างน้อย 2 ตัวอักษร';
   }
   if (!data.requestType) {
     errors.requestType = 'กรุณาเลือกประเภทคำขอ';
   }
-  if (data.requestDetails.trim().length < 10) {
-    errors.requestDetails = 'กรุณากรอกรายละเอียดอย่างน้อย 10 ตัวอักษร';
+  if (!data.location.trim()) {
+    errors.location = 'กรุณากรอกสถานที่';
+  }
+  if (data.details.trim().length < 10) {
+    errors.details = 'กรุณากรอกรายละเอียดอย่างน้อย 10 ตัวอักษร';
   }
   return errors;
 }
 
 const initialFormData = {
-  displayName: '',
+  requesterName: '',
   requestType: '',
-  requestDetails: '',
+  location: '',
+  details: '',
+  priority: 'normal',
 };
 
 function RequestForm({ onAddRequest }) {
-  // TODO LAB4-R05: สร้าง form/errors state
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
   const [feedback, setFeedback] = useState('');
 
-  // TODO LAB4-R05: สร้าง controlled input handler
   function handleChange(event) {
     const { name, value } = event.target;
     setFormData((currentData) => ({ ...currentData, [name]: value }));
@@ -36,7 +39,6 @@ function RequestForm({ onAddRequest }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    // TODO LAB4-R05: validate → onAddRequest / setErrors
     const validationErrors = validate(formData);
     setErrors(validationErrors);
 
@@ -45,9 +47,10 @@ function RequestForm({ onAddRequest }) {
       return;
     }
 
+    // ส่งข้อมูลที่มี key ตรงกับ Data Contract (requesterName, requestType, location, details, priority)
     onAddRequest(formData);
-    setFeedback(`ส่งคำร้องของคุณ ${formData.displayName} เรียบร้อยแล้ว`);
-    setFormData(initialFormData); // Reset form
+    setFeedback(`ส่งคำร้องของคุณ ${formData.requesterName} เรียบร้อยแล้ว`);
+    setFormData(initialFormData);
   }
 
   return (
@@ -56,20 +59,22 @@ function RequestForm({ onAddRequest }) {
       <p>กรอกข้อมูลด้านล่างเพื่อส่งคำร้องให้เจ้าหน้าที่</p>
 
       <form id="request-form" className="form-grid" onSubmit={handleSubmit}>
+        {/* ชื่อผู้แจ้ง */}
         <div className="form-group">
-          <label htmlFor="displayName">ชื่อผู้แจ้ง</label>
+          <label htmlFor="requesterName">ชื่อผู้แจ้ง</label>
           <input
             type="text"
-            id="displayName"
-            name="displayName"
-            value={formData.displayName}
+            id="requesterName"
+            name="requesterName"
+            value={formData.requesterName}
             onChange={handleChange}
-            aria-invalid={Boolean(errors.displayName)}
-            aria-describedby="displayName-error"
+            aria-invalid={Boolean(errors.requesterName)}
+            aria-describedby="requesterName-error"
           />
-          {errors.displayName && <small id="displayName-error" className="error-message">{errors.displayName}</small>}
+          {errors.requesterName && <small id="requesterName-error" className="error-message">{errors.requesterName}</small>}
         </div>
 
+        {/* ประเภทคำร้อง */}
         <div className="form-group">
           <label htmlFor="requestType">ประเภทคำร้อง</label>
           <select
@@ -81,25 +86,55 @@ function RequestForm({ onAddRequest }) {
             aria-describedby="requestType-error"
           >
             <option value="">-- เลือกประเภท --</option>
-            <option value="general">เรื่องทั่วไป</option>
-            <option value="maintenance">ซ่อมบำรุง</option>
-            <option value="it-support">ปัญหา IT</option>
+            <option value="แจ้งซ่อม">แจ้งซ่อม</option>
+            <option value="ร้องเรียน">ร้องเรียน</option>
+            <option value="สอบถาม">สอบถาม</option>
           </select>
           {errors.requestType && <small id="requestType-error" className="error-message">{errors.requestType}</small>}
         </div>
 
-        <div className="form-group full-width">
-          <label htmlFor="requestDetails">รายละเอียด</label>
-          <textarea
-            id="requestDetails"
-            name="requestDetails"
-            rows="4"
-            value={formData.requestDetails}
+        {/* สถานที่ */}
+        <div className="form-group">
+          <label htmlFor="location">สถานที่</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={formData.location}
             onChange={handleChange}
-            aria-invalid={Boolean(errors.requestDetails)}
-            aria-describedby="requestDetails-error"
+            aria-invalid={Boolean(errors.location)}
+            aria-describedby="location-error"
+          />
+          {errors.location && <small id="location-error" className="error-message">{errors.location}</small>}
+        </div>
+
+        {/* ความสำคัญ */}
+        <div className="form-group">
+          <label htmlFor="priority">ความสำคัญ</label>
+          <select
+            id="priority"
+            name="priority"
+            value={formData.priority}
+            onChange={handleChange}
+          >
+            <option value="normal">ปรกติ (normal)</option>
+            <option value="urgent">เร่งด่วน (urgent)</option>
+          </select>
+        </div>
+
+        {/* รายละเอียด */}
+        <div className="form-group full-width">
+          <label htmlFor="details">รายละเอียด</label>
+          <textarea
+            id="details"
+            name="details"
+            rows="4"
+            value={formData.details}
+            onChange={handleChange}
+            aria-invalid={Boolean(errors.details)}
+            aria-describedby="details-error"
           ></textarea>
-          {errors.requestDetails && <small id="requestDetails-error" className="error-message">{errors.requestDetails}</small>}
+          {errors.details && <small id="details-error" className="error-message">{errors.details}</small>}
         </div>
 
         <div className="form-actions full-width">
