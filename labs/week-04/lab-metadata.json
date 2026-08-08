@@ -1,5 +1,11 @@
 {
-  "lab": "week-04",
-  "title": "Week 04 Lab",
-  "description": "Campus Service Request"
+  "week": "week-04",
+  "title": "Campus Service Request",
+  "status": "submitted",
+  "originalRepoUrl": "",
+  "originalCommit": "",
+  "pullRequestUrl": "",
+  "submissionTag": "lab-04-submission-v1",
+  "testStatus": "pass",
+  "notes": ""
 }
