@@ -1,127 +1,113 @@
 import { useState } from 'react';
 
-const initialFormState = {
-  requesterName: '',
+// TODO LAB4-R05: สร้าง validation function
+function validate(data) {
+  const errors = {};
+  if (data.displayName.trim().length < 2) {
+    errors.displayName = 'กรุณากรอกชื่ออย่างน้อย 2 ตัวอักษร';
+  }
+  if (!data.requestType) {
+    errors.requestType = 'กรุณาเลือกประเภทคำขอ';
+  }
+  if (data.requestDetails.trim().length < 10) {
+    errors.requestDetails = 'กรุณากรอกรายละเอียดอย่างน้อย 10 ตัวอักษร';
+  }
+  return errors;
+}
+
+const initialFormData = {
+  displayName: '',
   requestType: '',
-  location: '',
-  details: '',
-  priority: 'normal',
+  requestDetails: '',
 };
 
 function RequestForm({ onAddRequest }) {
-  const [formData, setFormData] = useState(initialFormState);
+  // TODO LAB4-R05: สร้าง form/errors state
+  const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
-  const [statusMessage, setStatusMessage] = useState('');
+  const [feedback, setFeedback] = useState('');
 
+  // TODO LAB4-R05: สร้าง controlled input handler
   function handleChange(event) {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((currentData) => ({ ...currentData, [name]: value }));
+    setFeedback('');
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    // TODO LAB4-R05–R07: validate controlled state แล้วเรียก onAddRequest
-    const newErrors = {};
-    if (!formData.requesterName.trim()) {
-      newErrors.requesterName = 'กรุณากรอกชื่อผู้แจ้ง';
-    }
-    if (!formData.requestType) {
-      newErrors.requestType = 'กรุณาเลือกประเภทคำร้อง';
+    // TODO LAB4-R05: validate → onAddRequest / setErrors
+    const validationErrors = validate(formData);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setFeedback('ยังส่งคำร้องไม่ได้ กรุณาตรวจสอบข้อมูล');
+      return;
     }
 
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      onAddRequest(formData);
-      setFormData(initialFormState);
-      setStatusMessage('เพิ่มคำร้องสำเร็จ');
-      setTimeout(() => setStatusMessage(''), 3000);
-    } else {
-      setStatusMessage('กรุณากรอกข้อมูลให้ครบถ้วน');
-    }
+    onAddRequest(formData);
+    setFeedback(`ส่งคำร้องของคุณ ${formData.displayName} เรียบร้อยแล้ว`);
+    setFormData(initialFormData); // Reset form
   }
 
   return (
     <section className="panel" aria-labelledby="request-form-title">
-      <p className="eyebrow dark">CONTROLLED FORM</p>
-      <h2 id="request-form-title">สร้างคำร้องใหม่</h2>
-      <form onSubmit={handleSubmit} noValidate>
-        <div className="field">
-          <label htmlFor="requesterName">ชื่อผู้แจ้ง</label>
+      <h2 id="request-form-title">ส่งคำร้องใหม่</h2>
+      <p>กรอกข้อมูลด้านล่างเพื่อส่งคำร้องให้เจ้าหน้าที่</p>
+
+      <form id="request-form" className="form-grid" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="displayName">ชื่อผู้แจ้ง</label>
           <input
-            id="requesterName"
-            name="requesterName"
-            value={formData.requesterName}
+            type="text"
+            id="displayName"
+            name="displayName"
+            value={formData.displayName}
             onChange={handleChange}
-            aria-invalid={!!errors.requesterName}
+            aria-invalid={Boolean(errors.displayName)}
+            aria-describedby="displayName-error"
           />
-          {errors.requesterName && <small className="error">{errors.requesterName}</small>}
+          {errors.displayName && <small id="displayName-error" className="error-message">{errors.displayName}</small>}
         </div>
 
-        <div className="field">
+        <div className="form-group">
           <label htmlFor="requestType">ประเภทคำร้อง</label>
           <select
             id="requestType"
             name="requestType"
             value={formData.requestType}
             onChange={handleChange}
-            aria-invalid={!!errors.requestType}
+            aria-invalid={Boolean(errors.requestType)}
+            aria-describedby="requestType-error"
           >
             <option value="">-- เลือกประเภท --</option>
-            <option value="แจ้งซ่อม">แจ้งซ่อม</option>
-            <option value="ขอใช้ห้อง">ขอใช้ห้อง</option>
-            <option value="บริการบัญชีผู้ใช้">บริการบัญชีผู้ใช้</option>
+            <option value="general">เรื่องทั่วไป</option>
+            <option value="maintenance">ซ่อมบำรุง</option>
+            <option value="it-support">ปัญหา IT</option>
           </select>
-          {errors.requestType && <small className="error">{errors.requestType}</small>}
+          {errors.requestType && <small id="requestType-error" className="error-message">{errors.requestType}</small>}
         </div>
 
-        <div className="field">
-          <label htmlFor="location">สถานที่</label>
-          <input
-            id="location"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="field">
-          <label htmlFor="details">รายละเอียด</label>
+        <div className="form-group full-width">
+          <label htmlFor="requestDetails">รายละเอียด</label>
           <textarea
-            id="details"
-            name="details"
+            id="requestDetails"
+            name="requestDetails"
             rows="4"
-            value={formData.details}
+            value={formData.requestDetails}
             onChange={handleChange}
+            aria-invalid={Boolean(errors.requestDetails)}
+            aria-describedby="requestDetails-error"
           ></textarea>
+          {errors.requestDetails && <small id="requestDetails-error" className="error-message">{errors.requestDetails}</small>}
         </div>
 
-        <fieldset className="field">
-          <legend>ความเร่งด่วน</legend>
-          <label>
-            <input
-              type="radio"
-              name="priority"
-              value="normal"
-              checked={formData.priority === 'normal'}
-              onChange={handleChange}
-            />{' '}
-            ปกติ
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="priority"
-              value="urgent"
-              checked={formData.priority === 'urgent'}
-              onChange={handleChange}
-            />{' '}
-            เร่งด่วน
-          </label>
-        </fieldset>
-
-        <button type="submit">เพิ่มคำร้อง</button>
-        {statusMessage && <p className="status" role="status">{statusMessage}</p>}
+        <div className="form-actions full-width">
+          <button type="submit">ส่งคำร้อง</button>
+          <p className="status" role="status">
+            {feedback}
+          </p>
+        </div>
       </form>
     </section>
   );

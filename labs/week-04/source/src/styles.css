@@ -47,42 +47,65 @@ form > button, .filter-active { border: 0; border-radius: .6rem; padding: .65rem
   .section-heading { flex-direction: row; justify-content: space-between; align-items: center; }
 }
 
-/* Accessibility and Interaction States */
-:is(button, input, select, textarea):focus-visible {
-  outline: 3px solid var(--blue);
+/* TODO LAB4-R12: เพิ่ม focus-visible, aria-invalid และ state/badge styles */
+
+/* --- Accessibility & Form Validation --- */
+
+/* แสดง outline ที่ชัดเจนเมื่อ focus ด้วยคีย์บอร์ด */
+:focus-visible {
+  outline: 3px solid var(--color-primary-light);
   outline-offset: 2px;
+  border-radius: var(--border-radius);
 }
 
-:is(input, select, textarea)[aria-invalid='true'] {
-  border-color: var(--danger);
+/* สไตล์สำหรับ input ที่มีข้อมูลไม่ถูกต้อง */
+[aria-invalid='true'] {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 1px var(--color-danger);
 }
 
-:is(input, select, textarea)[aria-invalid='true']:focus-visible {
-  outline-color: var(--danger);
+.error-message {
+  color: var(--color-danger);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 
-/* Status Badges */
-.status-badge {
-  display: inline-block;
+/* --- Status Badges --- */
+
+.badge {
   padding: 0.25em 0.6em;
-  font-size: 0.75rem;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
+  border-radius: var(--border-radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: 0.5rem;
 }
 
-.status-badge--pending {
-  color: #7d5a00;
-  background-color: #fff2d8;
+.badge.status-pending {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-fg);
 }
-.status-badge--in-progress {
-  color: var(--blue);
-  background-color: #dfeffd;
+
+.badge.status-inProgress {
+  background-color: var(--color-info-bg);
+  color: var(--color-info-fg);
 }
-.status-badge--completed {
-  color: #006435;
-  background-color: #d8f3e8;
+
+.badge.status-completed {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-fg);
 }
+
+/* --- Empty State --- */
+
+.empty-state {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--border-radius);
+  margin-top: 1rem;
+}
+
+
