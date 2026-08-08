@@ -15,7 +15,14 @@
 ## Component Tree
 
 ```text
-TODO: วาด App → child components และระบุ state owner
+App (owns: requests, statusFilter)
+├── AppHeader
+├── SummaryPanel
+├── RequestForm (owns: formData, errors)
+└── section
+    ├── FilterBar
+    └── RequestList
+        └── RequestItem (many)
 ```
 
 ## Setup และ Run
@@ -35,20 +42,20 @@ TODO: อธิบายว่าใคร owns requests/filter/form state, prop
 
 ## Test Evidence
 
-| Test ID | Actual Result | Pass/Fail | Evidence/Screenshot |
-|---|---|---|---|
-| TC-01 Initial | TODO | TODO | TODO |
-| TC-02 Controlled input | TODO | TODO | TODO |
-| TC-03 Invalid | TODO | TODO | TODO |
-| TC-04 Valid add | TODO | TODO | TODO |
-| TC-05 Filter | TODO | TODO | TODO |
-| TC-06 All | TODO | TODO | TODO |
-| TC-07 Empty | TODO | TODO | TODO |
-| TC-08 Delete | TODO | TODO | TODO |
-| TC-09 Mobile | TODO | TODO | TODO |
-| TC-10 Keyboard | TODO | TODO | TODO |
-| TC-11 Build | TODO | TODO | TODO |
-| TC-12 Pages | TODO | TODO | TODO |
+| Test ID                | Actual Result | Pass/Fail | Evidence/Screenshot |
+| ---------------------- | ------------- | --------- | ------------------- |
+| TC-01 Initial          | TODO          | TODO      | TODO                |
+| TC-02 Controlled input | TODO          | TODO      | TODO                |
+| TC-03 Invalid          | TODO          | TODO      | TODO                |
+| TC-04 Valid add        | TODO          | TODO      | TODO                |
+| TC-05 Filter           | TODO          | TODO      | TODO                |
+| TC-06 All              | TODO          | TODO      | TODO                |
+| TC-07 Empty            | TODO          | TODO      | TODO                |
+| TC-08 Delete           | TODO          | TODO      | TODO                |
+| TC-09 Mobile           | TODO          | TODO      | TODO                |
+| TC-10 Keyboard         | TODO          | TODO      | TODO                |
+| TC-11 Build            | TODO          | TODO      | TODO                |
+| TC-12 Pages            | TODO          | TODO      | TODO                |
 
 ## Screenshots
 
@@ -63,4 +70,3 @@ TODO: เปรียบเทียบ DOM mutation กับ State-driven UI 3
 ## AI / External Resource Disclosure
 
 ระบุเครื่องมือหรือแหล่งที่ใช้, prompt/คำถามสำคัญ, ส่วนที่นำมาปรับ และวิธีที่ตรวจสอบความถูกต้อง หากไม่ได้ใช้ให้เขียนว่า “ไม่ได้ใช้”
-

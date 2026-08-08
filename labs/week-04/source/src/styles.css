@@ -49,3 +49,63 @@ form > button, .filter-active { border: 0; border-radius: .6rem; padding: .65rem
 
 /* TODO LAB4-R12: เพิ่ม focus-visible, aria-invalid และ state/badge styles */
 
+/* --- Accessibility & Form Validation --- */
+
+/* แสดง outline ที่ชัดเจนเมื่อ focus ด้วยคีย์บอร์ด */
+:focus-visible {
+  outline: 3px solid var(--color-primary-light);
+  outline-offset: 2px;
+  border-radius: var(--border-radius);
+}
+
+/* สไตล์สำหรับ input ที่มีข้อมูลไม่ถูกต้อง */
+[aria-invalid='true'] {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 1px var(--color-danger);
+}
+
+.error-message {
+  color: var(--color-danger);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* --- Status Badges --- */
+
+.badge {
+  padding: 0.25em 0.6em;
+  border-radius: var(--border-radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.badge.status-pending {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+}
+
+.badge.status-inProgress {
+  background-color: var(--color-info-bg);
+  color: var(--color-info-fg);
+}
+
+.badge.status-completed {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-fg);
+}
+
+/* --- Empty State --- */
+
+.empty-state {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--border-radius);
+  margin-top: 1rem;
+}
+
+
