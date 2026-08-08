@@ -47,42 +47,5 @@ form > button, .filter-active { border: 0; border-radius: .6rem; padding: .65rem
   .section-heading { flex-direction: row; justify-content: space-between; align-items: center; }
 }
 
-/* Accessibility and Interaction States */
-:is(button, input, select, textarea):focus-visible {
-  outline: 3px solid var(--blue);
-  outline-offset: 2px;
-}
+/* TODO LAB4-R12: เพิ่ม focus-visible, aria-invalid และ state/badge styles */
 
-:is(input, select, textarea)[aria-invalid='true'] {
-  border-color: var(--danger);
-}
-
-:is(input, select, textarea)[aria-invalid='true']:focus-visible {
-  outline-color: var(--danger);
-}
-
-/* Status Badges */
-.status-badge {
-  display: inline-block;
-  padding: 0.25em 0.6em;
-  font-size: 0.75rem;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: 0.5rem;
-}
-
-.status-badge--pending {
-  color: #7d5a00;
-  background-color: #fff2d8;
-}
-.status-badge--in-progress {
-  color: var(--blue);
-  background-color: #dfeffd;
-}
-.status-badge--completed {
-  color: #006435;
-  background-color: #d8f3e8;
-}
