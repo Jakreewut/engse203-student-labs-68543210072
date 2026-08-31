@@ -13,6 +13,7 @@ function RequestCard({ request, onDeleteRequest ,onMarkDone}) {
             ทำเสร็จ
           </button>
 )}
+
         {/* TODO B4: แทน {request.priority} ด้านล่างด้วย <PriorityBadge priority={request.priority} /> ที่คุณสร้าง */}
         <p><span className={`badge ${request.status}`}>{request.status}</span> · {request.priority}</p>
       </div>
