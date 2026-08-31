@@ -6,7 +6,7 @@ import LoadingState from '../components/LoadingState.jsx';
 import RequestList from '../components/RequestList.jsx';
 import SummaryPanel from '../components/SummaryPanel.jsx';
 import useManualReload from '../hooks/useManualReload.js';
-import { deleteRequest, getRequests, resetRequests } from '../services/requestService.js';
+import { deleteRequest, getRequests, resetRequests, updateRequestStatus } from '../services/requestService.js';
 
 function DashboardPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -79,8 +79,18 @@ function DashboardPage() {
   }
 
   async function handleMarkDone(requestId) {
-  console.log('กดปุ่มทำเสร็จที่:', requestId);
-}
+    try {
+      // 1. เรียก API เพื่อเปลี่ยนสถานะคำร้องนั้นให้เป็น 'completed'
+      const nextRequests = await updateRequestStatus(requestId, 'completed');
+      
+      // 2. เอาข้อมูลชุดใหม่ (ที่สถานะเปลี่ยนแล้ว) มาอัปเดต State (จุดนี้แหละที่ทำให้ Summary เปลี่ยนตาม)
+      setRequests(nextRequests);
+      
+      setNotice(`ทำเสร็จ: ${requestId}`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'อัปเดตสถานะไม่สำเร็จ');
+    }
+  }
 
   async function handleReset() {
     if (!window.confirm('ต้องการคืนข้อมูลตัวอย่างเริ่มต้นหรือไม่?')) return;
