@@ -50,10 +50,18 @@ function DashboardPage() {
     completed: requests.filter((request) => request.status === 'completed').length,
   }), [requests]);
 
-  const filteredRequests = statusFilter === 'all'
-    ? requests
+  const filteredRequests = requests.filter((request) => {
+    // 1. เช็คว่าตรงกับตัวกรองสถานะไหม
+    const matchStatus = statusFilter === 'all' || request.status === statusFilter;
 
-    : requests.filter((request) => request.status === statusFilter);
+    // 2. เช็คว่าตรงกับคำค้นหาไหม (แปลงเป็นตัวเล็กทั้งหมดก่อนเทียบ)
+    const lowerQuery = searchQuery.toLowerCase();
+    const matchSearch = request.requesterName.toLowerCase().includes(lowerQuery) ||
+      request.details.toLowerCase().includes(lowerQuery);
+
+    // ต้องผ่านทั้ง 2 เงื่อนไขถึงจะแสดงผล
+    return matchStatus && matchSearch;
+  });
 
   function handleRetry() {
     if (scenario) setSearchParams({});
