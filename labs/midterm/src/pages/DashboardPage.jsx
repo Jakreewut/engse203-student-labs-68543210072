@@ -78,6 +78,10 @@ function DashboardPage() {
     }
   }
 
+  async function handleMarkDone(requestId) {
+  console.log('กดปุ่มทำเสร็จที่:', requestId);
+}
+
   async function handleReset() {
     if (!window.confirm('ต้องการคืนข้อมูลตัวอย่างเริ่มต้นหรือไม่?')) return;
     try {
@@ -118,7 +122,7 @@ function DashboardPage() {
               style={{ width: '100%', marginBottom: '1rem', padding: '0.5rem' }}
             />
             {/* TODO B3: เพิ่ม onMarkDone={handleMarkDone} และเขียน handleMarkDone ให้เรียก updateRequestStatus แล้ว setRequests เพื่อให้ summary อัปเดต + รอด refresh */}
-            <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} />
+            <RequestList onDeleteRequest={handleDelete} onMarkDone={handleMarkDone} requests={filteredRequests}/>
           </section>
         </>
       )}
