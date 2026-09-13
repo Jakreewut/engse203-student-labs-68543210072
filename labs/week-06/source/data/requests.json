@@ -1,0 +1,47 @@
+[
+  {
+    "id": "REQ-001",
+    "requesterName": "สมชาย ใจดี",
+    "requestType": "แจ้งซ่อม",
+    "location": "ห้องปฏิบัติการ 301",
+    "details": "เครื่องปรับอากาศไม่ทำงานตั้งแต่เช้า",
+    "priority": "urgent",
+    "status": "in-progress"
+  },
+  {
+    "id": "REQ-002",
+    "requesterName": "สุภาวดี รักเรียน",
+    "requestType": "บริการบัญชีผู้ใช้",
+    "location": "อาคารวิศวกรรมซอฟต์แวร์",
+    "details": "เข้าสู่ระบบห้องปฏิบัติการไม่ได้",
+    "priority": "normal",
+    "status": "in-progress"
+  },
+  {
+    "id": "REQ-MTZLBWBQ-WHSW",
+    "requesterName": "สมชาย ใจดี",
+    "requestType": "แจ้งซ่อม",
+    "location": "ห้องปฏิบัติการ 301",
+    "details": "เครื่องปรับอากาศไม่ทำงานตั้งแต่เช้า",
+    "priority": "urgent",
+    "status": "pending"
+  },
+  {
+    "id": "REQ-MTZLHNVX-EU9V",
+    "requesterName": "สมชาย ใจดี",
+    "requestType": "แจ้งซ่อม",
+    "location": "ห้องปฏิบัติการ 301",
+    "details": "เครื่องปรับอากาศไม่ทำงานตั้งแต่เช้า",
+    "priority": "urgent",
+    "status": "pending"
+  },
+  {
+    "id": "REQ-MTZMTLSW-6CY0",
+    "requesterName": "ทดสอบ ระบบ",
+    "requestType": "แจ้งซ่อม",
+    "location": "C3-401",
+    "details": "รายละเอียดยาวพอสมควรจริง",
+    "priority": "normal",
+    "status": "pending"
+  }
+]
