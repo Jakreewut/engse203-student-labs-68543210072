@@ -46,4 +46,16 @@ function RequestDetailPage() {
   );
 }
 
+  async function handleChangeStatus(nextStatus) {
+    setUpdating(true);
+    try {
+      const updated = await updateRequestStatus(request.id, nextStatus);
+      setRequest(updated);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setUpdating(false);
+    }
+  }
+
 export default RequestDetailPage;

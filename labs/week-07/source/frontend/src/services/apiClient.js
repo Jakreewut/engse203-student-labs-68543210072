@@ -42,23 +42,49 @@ async function parseError(response) {
  *
  * อย่าลืมส่ง header 'Content-Type': 'application/json'
  */
+// ฟังก์ชันช่วยหน่วงเวลาก่อนลองใหม่
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export async function apiFetch(path, options = {}) {
-  let response;
-  try {
-    response = await fetch(`${BASE_URL}${path}`, {
-      headers: { 'Content-Type': 'application/json', ...options.headers },
-      ...options,
-    });
-  } catch {
-    // ① ต่อเซิร์ฟเวอร์ไม่ได้เลย — fetch โยน error
-    throw new ApiError('ติดต่อเซิร์ฟเวอร์ไม่ได้ — ตรวจว่าเปิด API ที่พอร์ต 3001 แล้วหรือยัง', 0);
-  }
+  const delays = [500, 1000, 2000]; // เว้นระยะห่าง 500ms, 1s, 2s
+  const maxRetries = delays.length; // จำนวนครั้งที่จะลองใหม่ (3 ครั้ง)
 
-  if (!response.ok) {
-    // ② เซิร์ฟเวอร์ตอบ แต่เป็น 4xx/5xx
-    throw new ApiError(await parseError(response), response.status);
-  }
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    let response;
 
-  if (response.status === 204) return null;   // ③ DELETE สำเร็จ ไม่มี body
-  return response.json();                     // ④ ปกติ
+    try {
+      response = await fetch(`${BASE_URL}${path}`, {
+        headers: { 'Content-Type': 'application/json', ...options.headers },
+        ...options,
+      });
+    } catch {
+      // ➀ ต่อเซิร์ฟเวอร์ไม่ได้เลย (status 0 / Network Error)
+      if (attempt < maxRetries) {
+        console.warn(`[Retry ${attempt + 1}/${maxRetries}] เชื่อมต่อไม่สำเร็จ กำลังลองใหม่ใน ${delays[attempt]}ms...`);
+        await sleep(delays[attempt]);
+        continue;
+      }
+      throw new ApiError('ติดต่อเซิร์ฟเวอร์ไม่ได้ — ตรวจว่าเปิด API ที่พอร์ต 3001 แล้วหรือยัง', 0);
+    }
+
+    // กรณีเซิร์ฟเวอร์ล่ม (5xx) ให้ลองส่งคำขอใหม่
+    if (response.status >= 500) {
+      if (attempt < maxRetries) {
+        console.warn(`[Retry ${attempt + 1}/${maxRetries}] เซิร์ฟเวอร์ตอบกลับ ${response.status} กำลังลองใหม่ใน ${delays[attempt]}ms...`);
+        await sleep(delays[attempt]);
+        continue;
+      }
+    }
+
+    // ➁ เซิร์ฟเวอร์ตอบ แต่เป็น Error ฝั่ง client (4xx) หรือ 5xx ที่ลองจนครบโควตาแล้ว
+    if (!response.ok) {
+      throw new ApiError(await parseError(response), response.status);
+    }
+
+    // ➂ DELETE สำเร็จ ไม่มี body
+    if (response.status === 204) return null;
+
+    // ➃ สำเร็จตามปกติ
+    return response.json();
+  }
 }
