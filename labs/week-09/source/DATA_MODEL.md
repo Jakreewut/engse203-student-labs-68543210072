@@ -24,6 +24,7 @@
 1  
 
 ^
+
 |  
 
 |  
@@ -120,6 +121,7 @@ SELECT
 FROM requests r
 JOIN users u ON r.requester_id = u.id
 ORDER BY r.id ASC;
+```
 
 ---
 
