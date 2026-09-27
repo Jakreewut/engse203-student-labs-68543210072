@@ -18,7 +18,16 @@ export function createApp() {
    *   ถ้า CORS อยู่ล่าง preflight จะถูกบล็อกก่อนถึง
    */
   
-  app.use(cors({ origin: config.corsOrigin }));
+  app.use(cors({
+  origin: (origin, callback) => {
+    // อนุญาตคำขอที่ไม่มี origin (เช่น Postman, curl, supertest) หรือ origin ที่ตรงกับรายการที่กำหนด
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+  }));
 
   /**
    * TODO W07-A2 (🏠 CP14) · เปลี่ยน logger เองเป็น morgan

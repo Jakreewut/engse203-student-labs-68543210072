@@ -12,7 +12,16 @@ export function createApp() {
   const app = express();
 
   // ① CORS ต้องมาก่อนทุกอย่าง — ไม่งั้นเบราว์เซอร์จะถูกบล็อกก่อนถึง route
-  app.use(cors({ origin: config.corsOrigin }));
+  app.use(cors({
+  origin: (origin, callback) => {
+    // อนุญาตคำขอที่ไม่มี origin (เช่น Postman, curl, supertest) หรือ origin ที่ตรงกับรายการที่กำหนด
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+  }));
 
   // ② logging — dev อ่านง่าย · production กระชับสำหรับเก็บ log
   app.use(morgan(config.isProduction ? 'combined' : 'dev'));
