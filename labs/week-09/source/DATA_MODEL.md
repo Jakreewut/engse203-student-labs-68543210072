@@ -24,6 +24,7 @@
 1  
 
 ^
+
 |  
 
 |  
@@ -109,7 +110,6 @@ users.id ใช้ INTEGER: เป็นคีย์ภายใน (Internal Ke
 ## 5. ตัวอย่างการใช้ JOIN
 
 ```sql
-
 SELECT 
   r.id AS request_id,
   u.name AS requester_name,
@@ -120,9 +120,22 @@ SELECT
 FROM requests r
 JOIN users u ON r.requester_id = u.id
 ORDER BY r.id ASC;
+```
+
+### ผลลัพธ์ที่ได้
+| request_id | requester_name | department | request_type | priority | status |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| REQ-001 | สมชาย ใจดี | วิศวกรรมซอฟต์แวร์ | แจ้งซ่อม | urgent | pending |
+| REQ-002 | สุภาวดี รักเรียน | วิศวกรรมซอฟต์แวร์ | บริการบัญชีผู้ใช้ | normal | in-progress |
+| REQ-003 | ธนกฤต ตั้งใจ | วิศวกรรมไฟฟ้า | ขอใช้อุปกรณ์ | normal | completed |
+| REQ-004 | สมชาย ใจดี | วิศวกรรมซอฟต์แวร์ | แจ้งซ่อม | urgent | pending |
+| REQ-005 | ปรียา ขยันยิ่ง | สำนักวิทยบริการ | อื่น ๆ | normal | pending |
+| REQ-006 | สุภาวดี รักเรียน | วิศวกรรมซอฟต์แวร์ | แจ้งซ่อม | normal | pending |
+| REQ-007 | ธนกฤต ตั้งใจ | วิศวกรรมไฟฟ้า | บริการบัญชีผู้ใช้ | urgent | in-progress |
+| REQ-008 | ปรียา ขยันยิ่ง | สำนักวิทยบริการ | ขอใช้อุปกรณ์ | normal | completed |
+
 
 ---
-
 ## 6. ข้อสังเกตสำหรับสัปดาห์ที่ 10
 
 ผลลัพธ์ที่ได้จากคำสั่ง JOIN ใน SQL:
