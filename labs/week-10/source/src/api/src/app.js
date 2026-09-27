@@ -11,6 +11,16 @@ import userRoutes from './routes/userRoutes.js';
 export function createApp() {
   const app = express();
 
+  const rawOrigins = process.env.CORS_ORIGIN || config?.corsOrigin || '';
+  const allowedOrigins = Array.isArray(rawOrigins)
+    ? rawOrigins
+    : rawOrigins.split(',').map(origin => origin.trim()).filter(Boolean);
+
+    app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Private-Network', 'true');
+    next();
+  });
+
   // ① CORS ต้องมาก่อนทุกอย่าง — ไม่งั้นเบราว์เซอร์จะถูกบล็อกก่อนถึง route
   app.use(cors({
   origin: (origin, callback) => {
