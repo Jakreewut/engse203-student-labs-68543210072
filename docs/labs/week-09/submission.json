@@ -1,0 +1,15 @@
+{
+  "week": "week-09",
+  "title": "SQL Injection and XSS Vulnerability",
+  "status": "ready-to-submit",
+  "originalRepoUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072",
+  "originalCommit": "",
+  "pullRequestUrl": "",
+  "submissionTag": "lab-09-submission-v1",
+  "testStatus": "pass",
+  "notes": "",
+  "pageUrl": "https://Jakreewut.github.io/engse203-student-labs-68543210072/labs/week-09/",
+  "sourceUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/tree/lab/week-09/labs/week-09/source",
+  "hasPublish": false,
+  "sourceEntries": 5
+}
