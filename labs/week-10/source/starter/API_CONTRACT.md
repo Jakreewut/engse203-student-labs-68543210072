@@ -187,3 +187,93 @@ cd frontend && npm run dev     # http://localhost:5173
 ```
 
 **ลำดับสำคัญ** — เปิด API ก่อนเสมอ ไม่งั้น frontend จะขึ้นข้อความว่าติดต่อเซิร์ฟเวอร์ไม่ได้
+
+
+## ผลการทดสอบ SQL Injection
+
+### ① เงื่อนไขที่เป็นจริงเสมอ
+
+**ยิง** `GET /api/requests?status=x' OR '1'='1`
+**ผลที่ได้** `[]` (0 รายการ) ✓ ถูกป้องกัน
+**เพราะ** ใช้ parameterized query — ค่าถูกตีความเป็นข้อความ ไม่ใช่คำสั่ง
+
+**ยิง** `GET http://localhost:3001/api/requests?status='%3B%20DROP%20TABLE%20requests%3B%20--`
+**ผลที่ได้** `[]` (0 รายการ) ✓ ถูกป้องกัน
+
+**ยิง** `GET http://localhost:3001/api/requests?status=pending'%20OR%20status='completed`
+**ผลที่ได้** `[]` (0 รายการ) ✓ ถูกป้องกัน
+
+
+## Data Model
+
+### 1. ตาราง `users`
+
+| คอลัมน์ | ชนิดข้อมูล | Constraint | คำอธิบาย |
+|---|---|---|---|
+| `id` | INTEGER | PRIMARY KEY AUTOINCREMENT | รหัสผู้ใช้งาน |
+| `name` | TEXT | UNIQUE NOT NULL | ชื่อผู้ใช้งาน (ไม่ซ้ำกัน) |
+
+### 2. ตาราง `requests`
+
+| คอลัมน์ | ชนิดข้อมูล | Constraint | คำอธิบาย |
+|---|---|---|---|
+| `id` | TEXT | PRIMARY KEY | รหัสคำร้อง เช่น `REQ-001` |
+| `requester_id` | INTEGER | NOT NULL, FOREIGN KEY REFERENCES users(id) | รหัสผู้แจ้ง อ้างอิงจากตาราง `users` |
+| `request_type` | TEXT | NOT NULL, CHECK in ('แจ้งซ่อม', 'บริการบัญชีผู้ใช้', 'ขอใช้อุปกรณ์', 'อื่น ๆ') | ประเภทคำร้อง |
+| `location` | TEXT | NOT NULL | สถานที่ |
+| `details` | TEXT | NOT NULL | รายละเอียดคำร้อง |
+| `priority` | TEXT | NOT NULL DEFAULT 'normal', CHECK in ('normal', 'urgent') | ลำดับความสำคัญ |
+| `status` | TEXT | NOT NULL DEFAULT 'pending', CHECK in ('pending', 'in-progress', 'completed') | สถานะคำร้อง |
+| `created_at` | TEXT | DEFAULT CURRENT_TIMESTAMP | เวลาที่สร้างคำร้อง |
+
+---
+
+## ข้อสังเกตเรื่องรูปแบบ
+
+> **โครงสร้างในฐานข้อมูลไม่เหมือนรูปแบบที่ API ส่งออก**
+> 
+> - **ฐานข้อมูลเก็บ `requester_id` (ตัวเลข)**: เพื่อไม่ให้ข้อมูลชื่อผู้ใช้ซ้ำซ้อนตามหลัก Relational Database
+> - **API คืน `requesterName` (ชื่อ)**: เพราะฝั่ง Frontend ต้องการนำชื่อไปแสดงผลทันทีโดยไม่ต้องยิงดึง user ซ้ำ
+> - **ชั้น service เป็นตัวแปลงด้วย `JOIN` และ `AS`**: แปลงข้อมูลจาก `requests JOIN users ON requests.requester_id = users.id` พร้อมตั้งชื่อ alias เป็น `requesterName` ให้สอดคล้องกับ Contract
+
+---
+
+## พฤติกรรมของ POST ⭐
+
+> ถ้าส่ง `requesterName` ที่ยังไม่มีในระบบ **จะสร้าง user ใหม่อัตโนมัติ**
+
+* **ทำไมข้อนี้สำคัญ**: เป็นพฤติกรรมที่คนอื่นเดาไม่ได้จากการดู endpoint เพียงอย่างเดียว หากไม่ระบุไว้ ผู้ที่นำ API ไปใช้ต่ออาจไม่ทราบว่าคำขอ `POST /api/requests` อาจสร้างแถวใหม่ในตาราง `users` ด้วย และอาจทำให้เกิดข้อมูลผู้ใช้ขยะโดยไม่ตั้งใจ
+* **contract มีไว้บอกสิ่งที่เดาไม่ได้** ไม่ใช่แค่คัดลอกรายการ endpoint
+
+---
+
+## โครงสร้างข้อมูล Request (API Response)
+
+| field | ชนิด | คำอธิบาย | ตัวอย่าง |
+|---|---|---|---|
+| `id` | string | รหัสคำร้อง · ขึ้นต้นด้วย `REQ-` · เซิร์ฟเวอร์สร้างให้ | `"REQ-001"` |
+| `requesterName` | string | ชื่อผู้แจ้ง · อย่างน้อย 2 ตัวอักษร | `"สมชาย ใจดี"` |
+| `requestType` | string | ประเภท · 1 ใน 4 ค่าที่กำหนด | `"แจ้งซ่อม"` |
+| `location` | string | สถานที่ · ห้ามว่าง | `"ห้องปฏิบัติการ 301"` |
+| `details` | string | รายละเอียด · อย่างน้อย 10 ตัวอักษร | `"เครื่องปรับอากาศไม่ทำงาน"` |
+| `priority` | string | `"normal"` หรือ `"urgent"` | `"urgent"` |
+| `status` | string | `"pending"` · `"in-progress"` · `"completed"` | `"pending"` |
+
+**ค่าที่ยอมรับของ `requestType`** — `แจ้งซ่อม` · `บริการบัญชีผู้ใช้` · `ขอใช้อุปกรณ์` · `อื่น ๆ`
+
+---
+
+## Endpoints
+
+| Method | Endpoint | คำอธิบาย | Request body | สำเร็จ | ผิดพลาด |
+|---|---|---|---|---|---|
+| `GET` | `/api/requests` | ดูคำร้องทั้งหมด | — | `200` + array | — |
+| `GET` | `/api/requests?status=` | กรองตามสถานะ | — | `200` + array | — |
+| `GET` | `/api/requests/:id` | ดูคำร้องใบเดียว | — | `200` + object | `404` ไม่พบ |
+| `POST` | `/api/requests` | สร้างคำร้องใหม่ (auto-create user) | Request (ไม่ต้องมี `id`, `status`) | `201` + object ที่สร้าง | `400` ข้อมูลไม่ถูกต้อง |
+| `PUT` | `/api/requests/:id` | เปลี่ยนสถานะ | `{ "status": "..." }` | `200` + object ที่แก้แล้ว | `400` สถานะผิด · `404` ไม่พบ |
+| `DELETE` | `/api/requests/:id` | ลบคำร้อง | — | `204` ไม่มี body | `404` ไม่พบ |
+
+---
+
+

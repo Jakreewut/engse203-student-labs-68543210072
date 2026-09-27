@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { config } from '../config.js';
 import { DatabaseSync } from 'node:sqlite';
 import { existsSync, readFileSync } from 'node:fs';
+import { AppError } from '../middleware/errorHandler.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const API_ROOT = path.resolve(HERE, '../..');
@@ -118,18 +119,27 @@ export function create(input) {
    */
 
   const id = nextId();
-  db.prepare(
-    `INSERT INTO requests (id, requester_id, request_type, location, details, priority)
-     VALUES (?, ?, ?, ?, ?, ?)`
-  ).run(
-    id,
-    resolveUserId(input.requesterName.trim()),
-    input.requestType,
-    input.location.trim(),
-    input.details.trim(),
-    input.priority ?? 'normal'
-  );
-  return findById(id);   // คืนรูปแบบที่ frontend ต้องการ
+  db.exec('BEGIN'); // เริ่ม Transaction ก่อนสร้าง user เพื่อให้ Rollback ได้ถ้ามีปัญหา
+  try {
+    const requesterId = resolveUserId(input.requesterName.trim());
+    db.prepare(
+      `INSERT INTO requests (id, requester_id, request_type, location, details, priority)
+       VALUES (?, ?, ?, ?, ?, ?)`
+    ).run(
+      id,
+      requesterId,
+      input.requestType,
+      input.location.trim(),
+      input.details.trim(),
+      input.priority ?? 'normal'
+    );
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw toAppError(err);
+  }
+
+  return findById(id);
 }
 
 
@@ -146,4 +156,45 @@ export function remove(id) {
   if (!target) return null;          // ② ไม่พบ → null
   db.prepare('DELETE FROM requests WHERE id = ?').run(id);
   return target;                     // ③ คืนของที่ลบ
+}
+
+function toAppError(err) {
+  const m = err.message ?? '';
+
+  if (m.includes('FOREIGN KEY')) {
+    return new AppError('อ้างถึงข้อมูลที่ไม่มีอยู่จริง', 400);
+  }
+  if (m.includes('CHECK')) {
+    return new AppError('ค่าที่ส่งมาไม่อยู่ในรายการที่กำหนด', 400);
+  }
+  if (m.includes('UNIQUE')) {
+    return new AppError('ข้อมูลนี้มีอยู่แล้วในระบบ', 409);
+  }
+  if (m.includes('NOT NULL')) {
+    return new AppError('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน', 400);
+  }
+
+  // กรณีอื่น ๆ เช่น 'no such table' ปล่อยผ่านเป็น Error ปกติ (errorHandler จะตอบ 500)
+  return err;
+}
+
+// ดึงผู้ใช้ทั้งหมด
+export function getAllUsers() {
+  return db.prepare('SELECT id, name FROM users').all();
+}
+
+// ค้นหาผู้ใช้ตาม id
+export function getUserById(id) {
+  return db.prepare('SELECT id, name FROM users WHERE id = ?').get(id);
+}
+
+// ดึงคำร้องทั้งหมดของผู้ใช้คนนั้น
+export function getRequestsByUserId(userId) {
+  return db.prepare(`
+    SELECT requests.id, users.name AS requesterName, requests.request_type AS requestType,
+           requests.location, requests.details, requests.priority, requests.status, requests.created_at
+    FROM requests
+    JOIN users ON requests.requester_id = users.id
+    WHERE requests.requester_id = ?
+  `).all(userId);
 }
