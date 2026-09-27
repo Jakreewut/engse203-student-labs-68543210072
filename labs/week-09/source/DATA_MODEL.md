@@ -13,18 +13,6 @@
 
 คำร้องแต่ละรายการ (requests) จะถูกส่งโดยผู้ใช้งานเพียงคนเดียวเท่านั้น ผ่าน Foreign Key requester_id ที่ชี้ไปยัง users.id
  
- ┌───────────────────────┐             ┌───────────────────────────────────┐
-│         users         │ 1         N │             requests              │
-├───────────────────────┤             ├───────────────────────────────────┤
-│ id (PK)   INTEGER     │◀────────────│ requester_id (FK) INTEGER         │
-│ name      TEXT        │             │ id (PK)           TEXT            │
-│ department TEXT       │             │ request_type      TEXT            │
-│ email     TEXT (UQ)   │             │ location          TEXT            │
-└───────────────────────┘             │ details           TEXT            │
-                                      │ priority          TEXT            │
-                                      │ status            TEXT            │
-                                      │ created_at        TEXT            │
-                                      └───────────────────────────────────┘
 
 |  users |                                 
 |---|
@@ -36,14 +24,15 @@
 1  
 
 ^
-|
-|
 |  
+
+|  
+
+|  
+  
 
 n
 
-
----
 |      requests     |                                 
 |---|
 | `requester_id (FK) INTEGER ` |
