@@ -11,7 +11,7 @@ import userRoutes from './routes/userRoutes.js';
 export function createApp() {
   const app = express();
 
-  const rawOrigins = process.env.CORS_ORIGIN || config?.corsOrigin || '';
+  const rawOrigins = process.env.CORS_ORIGIN || config?.corsOrigin || 'http://localhost:5173';
   const allowedOrigins = Array.isArray(rawOrigins)
     ? rawOrigins
     : rawOrigins.split(',').map(origin => origin.trim()).filter(Boolean);
