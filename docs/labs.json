@@ -106,18 +106,18 @@
   },
   {
     "week": "week-09",
-    "title": "SQL Injection and XSS Vulnerability",
+    "title": "SQL Fundamentals and Indexing",
     "status": "ready-to-submit",
     "originalRepoUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072",
     "originalCommit": "",
-    "pullRequestUrl": "",
+    "pullRequestUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/pull/20",
     "submissionTag": "lab-09-submission-v1",
     "testStatus": "pass",
     "notes": "",
     "pageUrl": "https://Jakreewut.github.io/engse203-student-labs-68543210072/labs/week-09/",
     "sourceUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/tree/lab/week-09/labs/week-09/source",
     "hasPublish": false,
-    "sourceEntries": 5
+    "sourceEntries": 8
   },
   {
     "week": "week-10",
@@ -125,7 +125,7 @@
     "status": "ready-to-submit",
     "originalRepoUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072",
     "originalCommit": "",
-    "pullRequestUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/pull/17",
+    "pullRequestUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/pull/19",
     "submissionTag": "lab-10-submission-v1",
     "testStatus": "pass",
     "notes": "",
@@ -133,5 +133,20 @@
     "sourceUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/tree/lab/week-10/labs/week-10/source",
     "hasPublish": true,
     "sourceEntries": 3
+  },
+  {
+    "week": "week-11",
+    "title": "Full-Stack System Integration & Deployment",
+    "status": "ready-to-submit",
+    "originalRepoUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072",
+    "originalCommit": "",
+    "pullRequestUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/pull/เลข_PR_ของ_week_11",
+    "submissionTag": "lab-11-submission-v1",
+    "testStatus": "pass",
+    "notes": "Live Demo: https://engse203-student-labs-68543210072.onrender.com",
+    "pageUrl": "https://Jakreewut.github.io/engse203-student-labs-68543210072/labs/week-11/",
+    "sourceUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/tree/lab/week-11/labs/week-11/source",
+    "hasPublish": false,
+    "sourceEntries": 14
   }
 ]
