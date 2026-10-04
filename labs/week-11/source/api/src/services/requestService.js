@@ -19,6 +19,18 @@ const DB_FILE = process.env.DB_FILE ?? path.join(API_ROOT, 'data', 'campus1.db')
 const SCHEMA_FILE = path.join(API_ROOT, 'data', 'schema.sql');
 
 let db;
+let driver = 'sqlite';
+async function openDatabase() {
+  const url = process.env.TURSO_DATABASE_URL;
+  if (url) {
+    // dynamic import — เครื่องที่ไม่ได้ติดตั้ง libsql (checker · npm test) ยังรันได้
+    const { default: Database } = await import('libsql');
+    driver = 'turso';
+    return new Database(url, { authToken: process.env.TURSO_AUTH_TOKEN });
+  }
+  driver = 'sqlite';
+  return new DatabaseSync(DB_FILE);
+}
 
 /**
  * คืนข้อมูลในรูปแบบเดียวกับที่ API เคยส่งตั้งแต่ Week 05
@@ -127,3 +139,6 @@ export function remove(id) {
   db.prepare('DELETE FROM requests WHERE id = ?').run(id);
   return target;
 }
+
+
+
