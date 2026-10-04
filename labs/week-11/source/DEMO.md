@@ -20,3 +20,6 @@
 - [x] **Config Management**: อธิบายการรวมค่าคอนฟิกไว้ที่ `api/src/config.js`
 - [x] **Health Check**: อธิบายตรรกะใน `api/src/routes/healthRoutes.js` และการคืน Status 200/503
 - [x] **Production Static Serving**: อธิบายการเสิร์ฟ static files และ regex `/^\/(?!api).*/` ใน `api/src/app.js`
+
+## 🌐 Live Demo
+🔗 https://engse203-student-labs-68543210072.onrender.com
