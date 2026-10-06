@@ -11,6 +11,16 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const API_ROOT = path.resolve(HERE, '..');
+const DEV_JWT_SECRET = 'dev-only-secret-do-not-use-in-production';
+
+function readJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (secret) return secret;                         
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('ต้องตั้งค่า JWT_SECRET ก่อนรันแบบ production (ดู api/.env.example)');
+  }
+  return DEV_JWT_SECRET;                              
+}
 
 export const config = {
   // สภาพแวดล้อม — 'development' หรือ 'production'
@@ -37,6 +47,10 @@ export const config = {
    *   แก้: production ที่ไม่มี JWT_SECRET ต้อง throw new Error(...) ทันที (fail fast)
    *        dev/test ยังใช้ค่าสำหรับพัฒนาได้
    */
-  jwtSecret: process.env.JWT_SECRET || 'dev-only-secret-do-not-use-in-production',
+  jwtSecret: readJwtSecret(),
   jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? '2h',
+
+  
 };
+
+

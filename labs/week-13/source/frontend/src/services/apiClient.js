@@ -30,14 +30,21 @@ async function parseError(response) {
  * - ต่อ API ไม่ได้เลย → โยน ApiError status 0
  */
 export async function apiFetch(path, options = {}) {
+  // ⭐ Challenge: ดึง Token มาแนบใน Header
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null;
+  const authHeader = token ? { Authorization: `Bearer ${token}` } : {};
+
   let response;
   try {
     response = await fetch(`${BASE_URL}${path}`, {
-      headers: { 'Content-Type': 'application/json', ...options.headers },
+      headers: {
+        'Content-Type': 'application/json',
+        ...authHeader,
+        ...options.headers,
+      },
       ...options,
     });
   } catch {
-    // fetch โยน error เมื่อต่อเซิร์ฟเวอร์ไม่ได้เลย เช่น API ไม่ได้เปิด
     throw new ApiError('ติดต่อเซิร์ฟเวอร์ไม่ได้ — ตรวจว่าเปิด API ที่พอร์ต 3001 แล้วหรือยัง', 0);
   }
 

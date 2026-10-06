@@ -8,10 +8,19 @@ import requestRoutes from './routes/requestRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import healthRoutes from './routes/healthRoutes.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
+import authRoutes from './routes/authRoutes.js';
 
 export function createApp() {
   const app = express();
 
+  // ⭐ Challenge: Security Headers
+  app.use((req, res, next) => {
+    res.set('X-Content-Type-Options', 'nosniff');
+    res.set('X-Frame-Options', 'DENY');
+    res.set('Referrer-Policy', 'no-referrer');
+    next();
+  });
+  
   // ① CORS — dev ใช้ (frontend 5173 เรียก API 3001 ข้ามพอร์ต)
   //    production ไม่จำเป็น เพราะเว็บกับ API อยู่ origin เดียวกัน แต่ใส่ไว้ไม่เสียหาย
   app.use(cors({ origin: config.corsOrigin }));
@@ -22,7 +31,7 @@ export function createApp() {
 
   // ③ อ่าน JSON body
   // 🏫 TODO W13-VALID (CP48): จำกัดขนาด body ไม่เกิน 10kb → express.json({ limit: '10kb' })
-  app.use(express.json());
+  app.use(express.json({ limit: '10kb' }));  
 
   // ④ route ของ API — ทุกอย่างอยู่ใต้ /api
   app.get('/api', (req, res) => {
@@ -32,6 +41,7 @@ export function createApp() {
   // 🏫 TODO W13-LOGIN (CP50): import authRoutes แล้วผูกที่ /api/auth
   app.use('/api/requests', requestRoutes);
   app.use('/api/users', userRoutes);
+  app.use('/api/auth', authRoutes);
 
   // ⑤ หน้าแรก / — ขึ้นกับสภาพแวดล้อม (CP39)
   if (config.isProd && existsSync(config.staticDir)) {
