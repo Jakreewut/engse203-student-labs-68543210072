@@ -1,11 +1,11 @@
 {
   "week": "week-13",
   "title": "Authentication, Quality & Security",
-  "status": "in-progress",
+  "status": "ready-to-submit",
   "originalRepoUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072",
-  "originalCommit": "",
-  "pullRequestUrl": "",
-  "submissionTag": "",
-  "testStatus": "pending",
-  "notes": ""
+  "originalCommit": "652a0ac",
+  "pullRequestUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/pull/28",
+  "submissionTag": "lab-13-submission-v1",
+  "testStatus": "pass",
+  "notes": "Live Demo: https://engse203-student-labs-68543210072.onrender.com"
 }
