@@ -148,5 +148,35 @@
     "sourceUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/tree/lab/week-11/labs/week-11/source",
     "hasPublish": true,
     "sourceEntries": 14
+  },
+  {
+    "week": "week-12",
+    "title": "Software Quality, Testing & Defect Fixing",
+    "status": "ready-to-submit",
+    "originalRepoUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072",
+    "originalCommit": "",
+    "pullRequestUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/pull/26",
+    "submissionTag": "lab-12-submission-v1",
+    "testStatus": "pass",
+    "notes": "",
+    "pageUrl": "https://Jakreewut.github.io/engse203-student-labs-68543210072/labs/week-12/",
+    "sourceUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/tree/lab/week-12/labs/week-12/source",
+    "hasPublish": false,
+    "sourceEntries": 15
+  },
+  {
+    "week": "week-13",
+    "title": "Authentication, Quality & Security",
+    "status": "in-progress",
+    "originalRepoUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072",
+    "originalCommit": "",
+    "pullRequestUrl": "",
+    "submissionTag": "",
+    "testStatus": "pending",
+    "notes": "",
+    "pageUrl": "https://Jakreewut.github.io/engse203-student-labs-68543210072/labs/week-13/",
+    "sourceUrl": "https://github.com/Jakreewut/engse203-student-labs-68543210072/tree/lab/week-13/labs/week-13/source",
+    "hasPublish": false,
+    "sourceEntries": 15
   }
 ]
