@@ -65,3 +65,102 @@ input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="tr
 @media (min-width:42rem) { .header-inner,.page-heading { flex-direction:row; align-items:center; } .header-inner { justify-content:space-between; } .request-card { flex-direction:row; justify-content:space-between; } }
 @media (min-width:52rem) { .summary-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } .section-heading { flex-direction:row; justify-content:space-between; align-items:center; } }
 @media (prefers-reduced-motion:reduce) { .spinner { animation:none; } }
+/* --- Login Page Styles --- */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 25rem;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #c8d8eb);
+  border-radius: 1rem;
+  padding: 2.2rem;
+  box-shadow: 0 8px 24px rgba(19, 55, 95, 0.08);
+}
+
+.login-eyebrow {
+  margin: 0 0 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--blue, #1768c4);
+  text-transform: uppercase;
+}
+
+.login-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.85rem;
+  font-weight: 850;
+  color: var(--navy, #0b2b57);
+}
+
+.login-desc {
+  margin: 0 0 1.5rem;
+  font-size: 0.92rem;
+  color: var(--muted, #5f7086);
+}
+
+.login-error {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  background: #feeceb;
+  border: 1px solid #f4b4ae;
+  border-radius: 0.6rem;
+  color: var(--danger, #b42318);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.login-form {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.login-field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.login-field label {
+  font-size: 0.92rem;
+  font-weight: 750;
+  color: #17243a;
+}
+
+.login-field input {
+  width: 100%;
+  padding: 0.72rem;
+  border: 1px solid #91a8c5;
+  border-radius: 0.6rem;
+  background: #ffffff;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.login-field input:focus-visible {
+  outline: 3px solid var(--blue, #1768c4);
+  border-color: var(--blue, #1768c4);
+}
+
+.login-button {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.6rem;
+  background: var(--blue, #1768c4);
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.login-button:hover {
+  opacity: 0.92;
+}
