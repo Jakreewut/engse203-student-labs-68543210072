@@ -1,6 +1,12 @@
 # Campus Service — ระบบ Full-Stack (ENGSE203 Week 11)
 
 ระบบรับคำร้องขอใช้บริการภายในมหาวิทยาลัย · **React + Express API + SQLite** ทำงานครบวงจร
+## Live Demo
+
+🔗 https://campus-service-xe2d.onrender.com/
+
+หมายเหตุ: Render free tier — เปิดครั้งแรกช้า 30–60 วินาที · ข้อมูลที่เพิ่มจะกลับเป็นค่าตั้งต้นเมื่อ restart
+
 
 ## สถาปัตยกรรม 3 ชั้น
 
@@ -52,11 +58,6 @@ NODE_ENV=production JWT_SECRET=<ค่าสุ่ม> PORT=10000 npm start
 | `api/src/app.js` | production เสิร์ฟ `frontend/dist` · path ที่ไม่ใช่ `/api` ได้ index.html |
 | `package.json` | `build` ใช้ `--include=dev` เพราะ cloud ตั้ง NODE_ENV=production ตั้งแต่ build |
 
-## Live Demo
-
-🔗 (ใส่ URL หลัง deploy ขึ้น Render)
-
-หมายเหตุ: Render free tier — เปิดครั้งแรกช้า 30–60 วินาที · ข้อมูลที่เพิ่มจะกลับเป็นค่าตั้งต้นเมื่อ restart
 
 ## ตรวจสุขภาพระบบ
 
