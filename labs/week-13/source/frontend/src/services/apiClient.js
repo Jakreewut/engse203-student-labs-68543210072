@@ -4,7 +4,7 @@
  */
 
 //const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001';
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV ? 'http://localhost:3001' : '');
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV ? 'http://localhost:3001' : 'https://campus-service-xe2d.onrender.com');
 
 /** error ที่รู้ว่ามาจาก API พร้อม status ที่ได้กลับมา */
 export class ApiError extends Error {
